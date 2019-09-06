@@ -88,7 +88,7 @@ class FCLayer():
     def __init__(self, num_nodes, weights, activation = "sigmoid"):
         self.weights = weights
         self.bias = None
-        #self.bias = self.bias / (np.linalg.norm(self.bias)) #this should be uniform random noise
+        #self.bias = np.random.normal(0,1, (self.weights.shape[0], self.))
         self.activation = activation
         self.output = None
         self.num_nodes = num_nodes
@@ -97,7 +97,7 @@ class FCLayer():
 
     def forward(self, x):
         wx = np.matmul(self.weights, x)
-        self.bias = np.zeros(wx.shape)
+        self.bias = np.random.normal(1,0,wx.shape)
         wx = np.add(wx, self.bias)
 
         if self.activation == "sigmoid":
