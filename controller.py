@@ -9,21 +9,21 @@ net = NN()
 weights1 = [[0.1, 0.3, 0.7],[0.9, 0.4, 0.4]]
 weights1 = np.asarray(weights1)
 layer1 = FCLayer(num_nodes=3, weights = weights1, activation = "relu")
-net.layers.append(layer1)
+net.add_layer(layer1)
 
 
 #bias2 = np.ones((2,1))
 weights2 = [[0.4, 0.3],[0.7, 0.2]]
 weights2 = np.asarray(weights2)
 layer2 = FCLayer(num_nodes=2, weights = weights2, activation = "sigmoid")
-net.layers.append(layer2)
+net.add_layer(layer2)
 
 
 #bias3 = np.ones((2,1))
 weights3 = [[0.5, 0.6],[0.6, 0.7], [0.3, 0.2]]
 weights3 = np.asarray(weights3)
 layer3 = FCLayer(num_nodes=2, weights = weights3, activation = "softmax")
-net.layers.append(layer3)
+net.add_layer(layer3)
 
 
 inputs = np.array([0.1, 0.7, 0.3])

@@ -80,6 +80,9 @@ class NN():
         for layer in self.layers:
             print(layer.weights)
 
+    def add_layer(self, layer):
+        self.layers.append(layer)
+
 
 class FCLayer():
     def __init__(self, num_nodes, weights, activation = "sigmoid"):
