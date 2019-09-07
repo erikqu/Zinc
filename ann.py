@@ -21,13 +21,21 @@ def softmax(x):
 def cross_entropy(y, y_hat):
         return np.dot(-y,np.log(y_hat))
 
+def heaviside(x):
+    return np.heaviside(0,x)
+
 
 
 class NN():
-    def __init__(self, layers = []):
+    def __init__(self, input_shape, layers = []):
         self.layers = layers
+        self.cache = {}
+        self.cache["input"] = None
+        self.cache["gt"] = None
+        self.input_shape = input_shape
 
     def forward(self, x):
+        self.cache["input"] = x
         for i in range(len(self.layers)):
             if i==0:
                 self.layers[i].forward(x)
@@ -43,13 +51,14 @@ class NN():
             # print(self.layers[i].bias)
             # print(self.layers[i].output)
 
-    def backward(self, inputs, ground_truth):
+    def backward(self, ground_truth):
+        self.cache["gt"] = ground_truth
         for i in range(len(self.layers)-1, -1, -1):
             if i == len(self.layers)-1:
                 # we should assume the output layer isn't going to be relu...
                 y = ground_truth
                 y_hat = self.layers[i].output
-                print("Loss: %f" %(cross_entropy(y, y_hat)))
+                #print("Loss: %f" %(cross_entropy(y, y_hat)))
                 dLdb = y_hat - y
                 dLdW = np.outer(dLdb, self.layers[i-1].output)
                 self.layers[i].bias -= dLdb
@@ -63,18 +72,26 @@ class NN():
                 Z_prev = self.layers[i-1].output
 
                 if self.layers[i].activation == "relu":
-                     dLdb = (W_next.T@(dLdb_next))*(np.heaviside(Z, 0))
+                     dLdb = (np.matmul(W_next.T, (dLdb_next)))*(np.heaviside(Z, 0))
                 else:
-                    dLdb = (W_next.T@(dLdb_next))*Z*(1-Z)
+                    dLdb = (np.matmul(W_next.T,(dLdb_next)))*Z*(1-Z)
 
                 if i == 0:
-                    dLdW = np.outer(dLdb, inputs)
+                    dLdW = np.outer(dLdb, self.cache["input"])
                 else:
                     dLdW = np.outer(dLdb, Z_prev)
                 self.layers[i].bias -= dLdb
                 self.layers[i].weights -= dLdW
                 self.layers[i].dLdb = dLdb
                 self.layers[i].dLdW = dLdW
+
+    def compile(self):
+        for i in range(len(self.layers)):
+            if self.layers[i].weights is None:
+                if i == len(self.layers)-1:
+                    self.layers[-1].weights = np.random.normal(0,1, (self.input_shape[0], self.layers[i].num_nodes))
+                else:
+                    self.layers[i].weights = np.random.normal(0,1,(self.layers[i+1].num_nodes, self.layers[i].num_nodes))
 
     def print_weights(self):
         for layer in self.layers:
@@ -85,7 +102,7 @@ class NN():
 
 
 class FCLayer():
-    def __init__(self, num_nodes, weights, activation = "sigmoid"):
+    def __init__(self, num_nodes, weights = None, activation = "sigmoid"):
         self.weights = weights
         self.bias = None
         #self.bias = np.random.normal(0,1, (self.weights.shape[0], self.))
@@ -98,7 +115,10 @@ class FCLayer():
     def forward(self, x):
         wx = np.matmul(self.weights, x)
         self.bias = np.random.normal(1,0,wx.shape)
+        print(wx.shape, self.bias.shape)
         wx = np.add(wx, self.bias)
+        print(wx.shape)
+
 
         if self.activation == "sigmoid":
                 wx = sigmoid(wx)
