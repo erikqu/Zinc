@@ -1,4 +1,4 @@
-from ann import NN, FCLayer
+from nickel import NN, FCLayer
 import numpy as np
 
 
