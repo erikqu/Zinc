@@ -92,9 +92,9 @@ class NN():
         for i in range(len(self.layers)):
             if self.layers[i].weights is None:
                 if i == 0:
-                    self.layers[i].weights = np.random.normal(0,1, (self.layers[i].num_nodes, self.input_shape[0]))
+                    self.layers[i].weights = np.random.normal(-1,1, (self.layers[i].num_nodes, self.input_shape[0]))
                 else:
-                    self.layers[i].weights = np.random.normal(0,1, (self.layers[i].num_nodes, self.layers[i-1].num_nodes))
+                    self.layers[i].weights = np.random.normal(-1,1, (self.layers[i].num_nodes, self.layers[i-1].num_nodes))
     def print_weights(self):
         for layer in self.layers:
             print(layer.weights)

@@ -52,4 +52,4 @@ if manned_input.lower() == "y":
             inp = np.append(inp, float(tmp))
         net.forward(inp)
         response = net.layers[-1].output
-        print(response)
+        print("RESPONSE: %s\n" %(response))
