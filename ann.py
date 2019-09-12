@@ -87,8 +87,10 @@ class NN():
     def compile(self):
         for i in range(len(self.layers)):
             if self.layers[i].weights is None:
-                self.layers[i].weights = np.random.normal(0,1, (self.layers[i].num_nodes, self.input_shape[0]))
-
+                if i == 0:
+                    self.layers[i].weights = np.random.normal(0,1, (self.layers[i].num_nodes, self.input_shape[0]))
+                else:
+                    self.layers[i].weights = np.random.normal(0,1, (self.layers[i].num_nodes, self.layers[i-1].num_nodes))
     def print_weights(self):
         for layer in self.layers:
             print(layer.weights)
@@ -108,7 +110,7 @@ class FCLayer():
         self.dLdW = None
 
     def forward(self, x):
-        print(self.weights.shape, x.shape)
+        # print(self.weights.shape, x.shape)
         wx = np.matmul(self.weights, x)
         self.bias = np.random.normal(1,0,wx.shape)
         wx = np.add(wx, self.bias)
