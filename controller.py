@@ -1,4 +1,5 @@
-from ann import *
+from ann import NN, FCLayer
+import numpy as np
 
 
 input_shape = (2,)
