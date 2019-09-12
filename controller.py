@@ -27,7 +27,7 @@ def f(x):
 
 
 datalength = 1000
-n_epochs = 1
+n_epochs = 10
 
 xs = [np.random.randint(2, size=2) for x in range(0,datalength)]
 ys = [[f(xs[x])] for x in range(len(xs))]
