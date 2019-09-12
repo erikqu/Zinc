@@ -1,4 +1,5 @@
 import numpy as np
+from numba import jit
 
 """
 Simple small neural network library.
@@ -9,21 +10,24 @@ Erik Quintanilla
 """
 
 
+@jit(nopython = True)
 def sigmoid(x):
         return np.exp(x)/(np.exp(x) +1 )
 
+@jit(nopython = True)
 def relu(x):
         return np.maximum(x, 0)
 
+@jit(nopython = True)
 def softmax(x):
         return np.exp(x)/sum(np.exp(x))
 
 def cross_entropy(y, y_hat):
         return np.dot(-y,np.log(y_hat))
 
+@jit(nopython = True)
 def heaviside(x):
     return np.heaviside(0,x)
-
 
 
 class NN():

@@ -1,4 +1,4 @@
-from nickel import NN, FCLayer
+from zinc import NN, FCLayer
 import numpy as np
 
 
@@ -27,7 +27,7 @@ def f(x):
 
 
 datalength = 1000
-n_epochs = 20
+n_epochs = 1
 
 xs = [np.random.randint(2, size=2) for x in range(0,datalength)]
 ys = [[f(xs[x])] for x in range(len(xs))]
