@@ -31,12 +31,13 @@ def heaviside(x):
 
 
 class NN():
-    def __init__(self, input_shape, layers = []):
+    def __init__(self, input_shape, layers = [], learning_rate = 1.):
         self.layers = layers
         self.cache = {}
         self.cache["input"] = None
         self.cache["gt"] = None
         self.input_shape = input_shape
+        self.learning_rate = learning_rate
 
     def forward(self, x):
         self.cache["input"] = x
@@ -64,8 +65,8 @@ class NN():
                 print("Loss: %f" %(cross_entropy(y, y_hat)))
                 dLdb = y_hat - y
                 dLdW = np.outer(dLdb, self.layers[i-1].output)
-                self.layers[i].bias -= dLdb
-                self.layers[i].weights -= dLdW
+                self.layers[i].bias -= self.learning_rate*dLdb
+                self.layers[i].weights -= self.learning_rate*dLdW
                 self.layers[i].dLdb = dLdb
                 self.layers[i].dLdW = dLdW
             else:
@@ -83,8 +84,8 @@ class NN():
                     dLdW = np.outer(dLdb, self.cache["input"])
                 else:
                     dLdW = np.outer(dLdb, Z_prev)
-                self.layers[i].bias -= dLdb
-                self.layers[i].weights -= dLdW
+                self.layers[i].bias -= self.learning_rate*dLdb
+                self.layers[i].weights -= self.learning_rate*dLdW
                 self.layers[i].dLdb = dLdb
                 self.layers[i].dLdW = dLdW
 
