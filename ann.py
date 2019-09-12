@@ -40,11 +40,9 @@ class NN():
             if i==0:
                 self.layers[i].forward(x)
             else:
-                previous = self.layers[i-1].output
+                previous = self.layers[i-1].output # (x, y) * (y, 1)
                 self.layers[i].forward(previous)
-
-            if i == len(self.layers)-1:
-                print("Output Vector: ", self.layers[i].output)
+                # print("Output Vector: ", self.layers[i].output)
                 # print("Weights: ", self.layers[i].weights)
 
             # print(self.layers[i].weights)
@@ -58,7 +56,8 @@ class NN():
                 # we should assume the output layer isn't going to be relu...
                 y = ground_truth
                 y_hat = self.layers[i].output
-                #print("Loss: %f" %(cross_entropy(y, y_hat)))
+                # print(y.shape, y_hat.shape)
+                print("Loss: %f" %(cross_entropy(y, y_hat)))
                 dLdb = y_hat - y
                 dLdW = np.outer(dLdb, self.layers[i-1].output)
                 self.layers[i].bias -= dLdb
@@ -88,10 +87,7 @@ class NN():
     def compile(self):
         for i in range(len(self.layers)):
             if self.layers[i].weights is None:
-                if i == len(self.layers)-1:
-                    self.layers[-1].weights = np.random.normal(0,1, (self.input_shape[0], self.layers[i].num_nodes))
-                else:
-                    self.layers[i].weights = np.random.normal(0,1,(self.layers[i+1].num_nodes, self.layers[i].num_nodes))
+                self.layers[i].weights = np.random.normal(0,1, (self.layers[i].num_nodes, self.input_shape[0]))
 
     def print_weights(self):
         for layer in self.layers:
@@ -105,7 +101,6 @@ class FCLayer():
     def __init__(self, num_nodes, weights = None, activation = "sigmoid"):
         self.weights = weights
         self.bias = None
-        #self.bias = np.random.normal(0,1, (self.weights.shape[0], self.))
         self.activation = activation
         self.output = None
         self.num_nodes = num_nodes
@@ -113,11 +108,10 @@ class FCLayer():
         self.dLdW = None
 
     def forward(self, x):
+        print(self.weights.shape, x.shape)
         wx = np.matmul(self.weights, x)
         self.bias = np.random.normal(1,0,wx.shape)
-        print(wx.shape, self.bias.shape)
         wx = np.add(wx, self.bias)
-        print(wx.shape)
 
 
         if self.activation == "sigmoid":
