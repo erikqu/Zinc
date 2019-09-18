@@ -7,7 +7,7 @@ input_shape = (2,)
 net = NN(input_shape = input_shape, learning_rate = 0.5)
 
 net.add_layer(FCLayer(num_nodes=input_shape[0],  activation = "sigmoid"))
-net.add_layer(FCLayer(num_nodes=10, activation = "sigmoid"))
+net.add_layer(FCLayer(num_nodes=2, activation = "sigmoid"))
 net.add_layer(FCLayer(num_nodes=1, activation = "sigmoid"))
 
 

@@ -23,7 +23,7 @@ def softmax(x):
         return np.exp(x)/sum(np.exp(x))
 
 def cross_entropy(y, y_hat):
-        return np.dot(-y,np.log(y_hat))
+        return -1*np.dot(y,np.log(y_hat))
 
 @jit(nopython = True)
 def heaviside(x):
