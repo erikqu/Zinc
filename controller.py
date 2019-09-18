@@ -4,7 +4,11 @@ from collections import Counter
 
 input_shape = (2,)
 
+<<<<<<< HEAD
 net = NN(input_shape = input_shape, learning_rate = 0.5)
+=======
+net = NN(input_shape = input_shape, learning_rate = 0.05)
+>>>>>>> 50a3eec67b0e0da2a00b826a85207e8e07235bde
 
 net.add_layer(FCLayer(num_nodes=input_shape[0],  activation = "sigmoid"))
 net.add_layer(FCLayer(num_nodes=10, activation = "sigmoid"))
@@ -59,4 +63,4 @@ if manned_input.lower() == "y":
             inp = np.append(inp, float(tmp))
         net.forward(inp)
         response = net.layers[-1].output
-        print(response)
+        print("RESPONSE: %s\n" %(response))

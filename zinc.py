@@ -31,13 +31,20 @@ def heaviside(x):
 
 
 class NN():
+<<<<<<< HEAD
     def __init__(self, input_shape, layers = [], learning_rate = 1.0):
+=======
+    def __init__(self, input_shape, layers = [], learning_rate = 1.):
+>>>>>>> 50a3eec67b0e0da2a00b826a85207e8e07235bde
         self.layers = layers
         self.cache = {}
         self.cache["input"] = None
         self.cache["gt"] = None
         self.input_shape = input_shape
+<<<<<<< HEAD
         self.optimizer = None
+=======
+>>>>>>> 50a3eec67b0e0da2a00b826a85207e8e07235bde
         self.learning_rate = learning_rate
 
     def forward(self, x):
@@ -61,7 +68,10 @@ class NN():
                 dLdW = np.outer(dLdb, self.layers[i-1].output)
                 self.layers[i].bias -= self.learning_rate*dLdb
                 self.layers[i].weights -= self.learning_rate*dLdW
+<<<<<<< HEAD
 
+=======
+>>>>>>> 50a3eec67b0e0da2a00b826a85207e8e07235bde
                 self.layers[i].dLdb = dLdb
                 self.layers[i].dLdW = dLdW
             else:
@@ -81,7 +91,10 @@ class NN():
                     dLdW = np.outer(dLdb, Z_prev)
                 self.layers[i].bias -= self.learning_rate*dLdb
                 self.layers[i].weights -= self.learning_rate*dLdW
+<<<<<<< HEAD
 
+=======
+>>>>>>> 50a3eec67b0e0da2a00b826a85207e8e07235bde
                 self.layers[i].dLdb = dLdb
                 self.layers[i].dLdW = dLdW
 
@@ -89,13 +102,17 @@ class NN():
         for i in range(len(self.layers)):
             if self.layers[i].weights is None:
                 if i == 0:
-                    self.layers[i].weights = np.random.normal(0,1, (self.layers[i].num_nodes, self.input_shape[0]))
+                    self.layers[i].weights = np.random.normal(-1,1, (self.layers[i].num_nodes, self.input_shape[0]))
                 else:
+<<<<<<< HEAD
                     self.layers[i].weights = np.random.normal(0,1, (self.layers[i].num_nodes, self.layers[i-1].num_nodes))
 
             self.layers[i].bias = np.random.normal(0, 1, (self.layers[i].weights.shape[0], ))
 
 
+=======
+                    self.layers[i].weights = np.random.normal(-1,1, (self.layers[i].num_nodes, self.layers[i-1].num_nodes))
+>>>>>>> 50a3eec67b0e0da2a00b826a85207e8e07235bde
     def print_weights(self):
         for layer in self.layers:
             print(layer.weights)

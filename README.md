@@ -1,4 +1,5 @@
 # Zinc
+
 > Einstein's brain had a lot of zinc.
 
 Simple neural network library written in Python using NumPy with syntax inspired by PyTorch. The library allows arbitrarily deep neural networks with sigmoid, relu, or softmax activations. 
@@ -9,6 +10,8 @@ Simple neural network library written in Python using NumPy with syntax inspired
 -   Model layers must be sequential (for now) 
 -   `net.forward(x)` does a forward pass on the input NumPy tensor `x`
 -   `net.backward(y)` does a backward pass on the ground truth  `y`
+-   You can run the example using simply `python3 controller.py`
+
 
 
 ## Example: Approximating the XOR Function 
