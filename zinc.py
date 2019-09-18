@@ -31,12 +31,14 @@ def heaviside(x):
 
 
 class NN():
-    def __init__(self, input_shape, layers = []):
+    def __init__(self, input_shape, layers = [], learning_rate = 1.0):
         self.layers = layers
         self.cache = {}
         self.cache["input"] = None
         self.cache["gt"] = None
         self.input_shape = input_shape
+        self.optimizer = None
+        self.learning_rate = learning_rate
 
     def forward(self, x):
         self.cache["input"] = x
@@ -46,12 +48,6 @@ class NN():
             else:
                 previous = self.layers[i-1].output # (x, y) * (y, 1)
                 self.layers[i].forward(previous)
-                # print("Output Vector: ", self.layers[i].output)
-                # print("Weights: ", self.layers[i].weights)
-
-            # print(self.layers[i].weights)
-            # print(self.layers[i].bias)
-            # print(self.layers[i].output)
 
     def backward(self, ground_truth):
         self.cache["gt"] = ground_truth
@@ -60,12 +56,12 @@ class NN():
                 # we should assume the output layer isn't going to be relu...
                 y = ground_truth
                 y_hat = self.layers[i].output
-                # print(y.shape, y_hat.shape)
                 print("Loss: %f" %(cross_entropy(y, y_hat)))
                 dLdb = y_hat - y
                 dLdW = np.outer(dLdb, self.layers[i-1].output)
-                self.layers[i].bias -= dLdb
-                self.layers[i].weights -= dLdW
+                self.layers[i].bias -= self.learning_rate*dLdb
+                self.layers[i].weights -= self.learning_rate*dLdW
+
                 self.layers[i].dLdb = dLdb
                 self.layers[i].dLdW = dLdW
             else:
@@ -83,8 +79,9 @@ class NN():
                     dLdW = np.outer(dLdb, self.cache["input"])
                 else:
                     dLdW = np.outer(dLdb, Z_prev)
-                self.layers[i].bias -= dLdb
-                self.layers[i].weights -= dLdW
+                self.layers[i].bias -= self.learning_rate*dLdb
+                self.layers[i].weights -= self.learning_rate*dLdW
+
                 self.layers[i].dLdb = dLdb
                 self.layers[i].dLdW = dLdW
 
@@ -95,6 +92,10 @@ class NN():
                     self.layers[i].weights = np.random.normal(0,1, (self.layers[i].num_nodes, self.input_shape[0]))
                 else:
                     self.layers[i].weights = np.random.normal(0,1, (self.layers[i].num_nodes, self.layers[i-1].num_nodes))
+
+            self.layers[i].bias = np.random.normal(0, 1, (self.layers[i].weights.shape[0], ))
+
+
     def print_weights(self):
         for layer in self.layers:
             print(layer.weights)
@@ -114,11 +115,8 @@ class FCLayer():
         self.dLdW = None
 
     def forward(self, x):
-        # print(self.weights.shape, x.shape)
         wx = np.matmul(self.weights, x)
-        self.bias = np.random.normal(1,0,wx.shape)
         wx = np.add(wx, self.bias)
-
 
         if self.activation == "sigmoid":
                 wx = sigmoid(wx)
