@@ -51,9 +51,8 @@ Enter element # 1 >>>>1
 
 
 ## TODO 
+
 - Add evaluate function
--
-- Add Numbas support 
 - Add Convolutional layers 
 - Add GPU support 
 - Model zoo 
