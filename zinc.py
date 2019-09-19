@@ -34,7 +34,7 @@ def heaviside(x):
 
 
 class NN():
-    def __init__(self, input_shape, layers = [], learning_rate = 1.0):
+    def __init__(self, input_shape, layers = [], learning_rate = 0.1):
         self.layers = layers
         self.cache = {}
         self.cache["input"] = None
@@ -44,6 +44,10 @@ class NN():
         self.learning_rate = learning_rate
 
     def forward(self, x):
+        """
+        Calling forward on the network with an input will iterate
+        over all the layers.
+        """
         self.cache["input"] = x
         for i in range(len(self.layers)):
             if i==0:
@@ -53,10 +57,14 @@ class NN():
                 self.layers[i].forward(previous)
 
     def backward(self, ground_truth):
+        """
+        Compute a backward pass starting from the output layer
+        and going backward. Printing the loss as we go and storing
+        the output and gradients.
+        """
         self.cache["gt"] = ground_truth
         for i in range(len(self.layers)-1, -1, -1):
             if i == len(self.layers)-1:
-                # we should assume the output layer isn't going to be relu...
                 y = ground_truth
                 y_hat = self.layers[i].output
                 print("Loss: %f" %(cross_entropy(y, y_hat)))
@@ -89,6 +97,10 @@ class NN():
                 self.layers[i].dLdW = dLdW
 
     def compile(self):
+        """
+        When the weights and biases are not assigned
+        we are to set them to random normally dist. noise.
+        """
         for i in range(len(self.layers)):
             if self.layers[i].weights is None:
                 if i == 0:
@@ -100,10 +112,16 @@ class NN():
 
 
     def print_weights(self):
+        """
+        Print out all the weight matrices of the network.
+        """
         for layer in self.layers:
             print(layer.weights)
 
     def add_layer(self, layer):
+        """
+        Prettily add a layer to the network.
+        """
         self.layers.append(layer)
 
 
@@ -118,6 +136,10 @@ class FCLayer():
         self.dLdW = None
 
     def forward(self, x):
+        """
+        Computes the forward pass (activation(wx+b)) for a given layer
+            x (tensor): input or output of previous layer
+        """
         wx = np.matmul(self.weights, x)
         wx = np.add(wx, self.bias)
 
