@@ -2,8 +2,7 @@ import numpy as np
 from numba import jit
 
 """
-Simple small neural network library.
-Elegantly written in Python with Numpy.
+Small NN lib.
 
 Erik Quintanilla
 
