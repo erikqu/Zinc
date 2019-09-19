@@ -25,6 +25,9 @@ def softmax(x):
 def cross_entropy(y, y_hat):
         return -1*np.dot(y,np.log(y_hat))
 
+def mean_squared_error(y, y_hat):
+        return (1/(len(y)))*((y-y_hat)**2)
+
 @jit(nopython = True)
 def heaviside(x):
     return np.heaviside(0,x)
